@@ -26,4 +26,4 @@ const vnode = h("div", { class: "box" }, [
 
 ## 📄 License
 
-This project is licensed under the [GPL(./LICENSE.txt) License.
+This project is licensed under the [GPL](./LICENSE.txt) License.
