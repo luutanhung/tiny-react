@@ -1,4 +1,4 @@
-import { createLogger } from "vite";
+import { isHTMLTag } from "./helpers";
 
 export const VNodeType = Object.freeze({
   TEXT: "TEXT_NODE",
@@ -7,7 +7,7 @@ export const VNodeType = Object.freeze({
 });
 
 /**
- * Creates a Virtual DOM Node (vnode).
+ * Creates a Virtual Element Node.
  *
  * This helper function builds a simple VNode object containing
  * a tag name, optional props, and optional children.
@@ -65,6 +65,13 @@ function createTextVNode(txt = "") {
   };
 }
 
+function createFragmentVNode(vNodes) {
+  return {
+    type: VNodeType.FRAGMENT,
+    children: mapChildrenToVNodes(vNodes),
+  };
+}
+
 function mapChildToVNode(child) {
   if (typeof child === "string") {
     return createTextVNode(child);
@@ -78,4 +85,37 @@ function mapChildrenToVNodes(children = []) {
     .map((child) => mapChildToVNode(child));
 }
 
-export { createElementVNode as h, createTextVNode as hString };
+/**
+ * Creates a Virtual DOM node (vnode).
+ *
+ * - If tag has the value of `FRAGMENT_NODE`, creates a Fragment Node.
+ * - If tag is not a valid tag name, creates a Text node with value of tag.
+ * - Otherwise, creates an Element Node.
+ */
+function createVNode(tag = "", props = {}, children = []) {
+  if (typeof tag !== "string") {
+    throw new TypeError("createVNode: tag must be a valid string.");
+  }
+
+  if (tag === VNodeType.FRAGMENT) {
+    if (normalizedChildren.length === 0) {
+      throw new Error(
+        "createVNode: Fragment virtual node must have children nodes.",
+      );
+    }
+    return createFragmentVNode(children);
+  }
+
+  if (isHTMLTag(tag)) {
+    return createElementVNode(tag, props, children);
+  }
+
+  return createTextVNode(tag);
+}
+
+export {
+  createVNode as h,
+  createElementVNode as hElement,
+  createTextVNode as hString,
+  createFragmentVNode as hFragment,
+};

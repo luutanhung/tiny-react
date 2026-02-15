@@ -1,5 +1,5 @@
 import { expect, test, describe } from "vitest";
-import { h, hString } from "../vnode";
+import { h } from "../vnode";
 import { log } from "../helpers";
 
 describe("vnode", () => {
@@ -19,7 +19,7 @@ describe("vnode", () => {
   });
 
   test("creates a text node", () => {
-    const textNode = hString("Tiny React");
+    const textNode = h("Tiny React");
     // console.log(textNode);
   });
 
