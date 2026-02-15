@@ -8,20 +8,40 @@ const { DOMElement, DOMCollection } = plugins;
  * @param {string} label - Optional label for the console
  */
 export function logDOM(node, label = "DOM Output") {
-  // Check if node exists to avoid crashing
   if (!node) {
     console.log(`\x1b[31m[${label}] Node is null or undefined\x1b[0m`);
     return;
   }
 
+  // Pretty formatted DOM tree
   const output = format(node, {
     plugins: [DOMElement, DOMCollection],
-    highlight: true, // Adds ANSI colors
+    highlight: true,
     indent: 2,
   });
 
-  console.log(`\x1b[36m--- ${label} ---\x1b[0m`); // Cyan label
+  // Extra details
+  const details = {
+    nodeType: node.nodeType,
+    nodeName: node.nodeName,
+    childCount: node.childNodes?.length ?? 0,
+    textContent: node.textContent ?? null,
+    attributes: node.attributes
+      ? [...node.attributes].reduce((acc, attr) => {
+          acc[attr.name] = attr.value;
+          return acc;
+        }, {})
+      : null,
+  };
+
+  console.log(`\x1b[36m--- ${label} ---\x1b[0m`);
+
+  console.log("\x1b[33mDetails:\x1b[0m");
+  console.log(details);
+
+  console.log("\x1b[33mStructure:\x1b[0m");
   console.log(output);
+
   console.log(`\x1b[36m${"-".repeat(label.length + 8)}\x1b[0m\n`);
 }
 
