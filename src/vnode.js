@@ -1,4 +1,4 @@
-import { isHTMLTag } from "./helpers";
+import { isHTMLTag, log } from "./helpers";
 
 export const VNodeType = Object.freeze({
   TEXT: "TEXT_NODE",
@@ -76,13 +76,15 @@ function mapChildToVNode(child) {
   if (typeof child === "string") {
     return createTextVNode(child);
   }
-  return createElementVNode(child);
+  return child;
 }
 
 function mapChildrenToVNodes(children = []) {
   return Array.from(children)
     .filter((child) => child !== null && child !== undefined)
-    .map((child) => mapChildToVNode(child));
+    .map((child) => {
+      return mapChildToVNode(child);
+    });
 }
 
 /**
@@ -98,7 +100,7 @@ function createVNode(tag = "", props = {}, children = []) {
   }
 
   if (tag === VNodeType.FRAGMENT) {
-    if (normalizedChildren.length === 0) {
+    if (children.length === 0) {
       throw new Error(
         "createVNode: Fragment virtual node must have children nodes.",
       );
