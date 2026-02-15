@@ -5,18 +5,28 @@ import { h } from "../vnode";
 
 describe("mount", () => {
   test("creates a tree of html elements", () => {
-    const vdom = h("div", {}, [
-      h("form", {}, [
+    const vdom = h("div", [
+      h("form", [
         h("label", { for: "password-length" }, ["password length"]),
         h("input", { id: "password-length", name: "password-length" }),
       ]),
-      h("button", { type: "submit" }, ["submit"]),
+      h(
+        "button",
+        {
+          type: "button",
+          class: "btn btn-primary",
+          onClick: () => {
+            console.log("clicked.");
+          },
+        },
+        ["submit"],
+      ),
     ]);
     // log(vdom);
     const container = document.createElement("div");
     mount(vdom, container);
     // logDOM(container);
-    // logDOM(container.querySelector("button"));
+    logDOM(container.querySelector("button"));
   });
 
   describe("createTextNode", () => {

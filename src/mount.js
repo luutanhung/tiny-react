@@ -1,3 +1,4 @@
+import { setProps } from "./helpers/attribute";
 import { VNodeType } from "./vnode";
 
 export function mount(vdom, parentEl) {
@@ -22,7 +23,10 @@ export function createTextNode(vdom, parentEl) {
 
 export function createElementNode(vdom, parentEl) {
   const { tag, props, children = [] } = vdom;
+
   const elementNode = document.createElement(tag);
+  setProps(elementNode, props);
+
   children.forEach((child) => {
     mount(child, elementNode);
   });

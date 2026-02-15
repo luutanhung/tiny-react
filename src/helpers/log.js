@@ -32,6 +32,8 @@ export function logDOM(node, label = "DOM Output") {
           return acc;
         }, {})
       : null,
+    // ⭐ event listeners
+    listeners: node.__listeners || {},
   };
 
   console.log(`\x1b[36m--- ${label} ---\x1b[0m`);
