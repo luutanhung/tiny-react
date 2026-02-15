@@ -1,4 +1,4 @@
-export const VDOM_TYPE = Object.freeze({
+export const VNodeType = Object.freeze({
   TEXT: "TEXT",
   ELEMENT: "element",
   FRAGMENT: "fragment",
@@ -28,7 +28,7 @@ export const VDOM_TYPE = Object.freeze({
  * @returns {{
  *  tag: string,
  *  props: Object,
- *  chidlren: Array|string,
+ *  children: Array|string,
  * }}
  *
  * @example
@@ -47,6 +47,7 @@ function createVNode(tag = "", props = {}, children = []) {
   }
 
   return {
+    type: VNodeType.ELEMENT,
     tag,
     props,
     children,
