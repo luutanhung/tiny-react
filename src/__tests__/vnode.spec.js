@@ -14,7 +14,7 @@ describe("vnode", () => {
         "Inspect a node",
         h("span", ["Tree with a Keyboard"]),
       ]);
-      log(elNode);
+      // log(elNode);
     });
   });
 

@@ -12,11 +12,15 @@
     "test": "vitest"
   },
   "devDependencies": {
+    "jsdom": "^28.1.0",
     "vite": "^7.3.1",
     "vitest": "^4.0.18"
   },
   "exports": {
     "unpkg": "./dist/tiny-react.js",
     "default": "./dist/tiny-react.js"
+  },
+  "dependencies": {
+    "pretty-format": "^30.2.0"
   }
 }

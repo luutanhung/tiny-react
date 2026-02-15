@@ -1,3 +1,30 @@
+import { format } from "pretty-format";
+import { plugins } from "pretty-format";
+const { DOMElement, DOMCollection } = plugins;
+
+/**
+ * Beautifully logs JSDOM elements to the terminal
+ * @param {HTMLElement|Document} node - The DOM node to log
+ * @param {string} label - Optional label for the console
+ */
+export function logDOM(node, label = "DOM Output") {
+  // Check if node exists to avoid crashing
+  if (!node) {
+    console.log(`\x1b[31m[${label}] Node is null or undefined\x1b[0m`);
+    return;
+  }
+
+  const output = format(node, {
+    plugins: [DOMElement, DOMCollection],
+    highlight: true, // Adds ANSI colors
+    indent: 2,
+  });
+
+  console.log(`\x1b[36m--- ${label} ---\x1b[0m`); // Cyan label
+  console.log(output);
+  console.log(`\x1b[36m${"-".repeat(label.length + 8)}\x1b[0m\n`);
+}
+
 export function log(obj) {
   const colors = {
     key: "\x1b[36m", // cyan

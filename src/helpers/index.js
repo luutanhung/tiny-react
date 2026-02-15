@@ -1,3 +1,3 @@
 export * from "./array";
-export * from "./logger";
+export * from "./log";
 export * from "./tag";
