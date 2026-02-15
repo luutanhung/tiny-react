@@ -1,7 +1,9 @@
+import { createLogger } from "vite";
+
 export const VNodeType = Object.freeze({
-  TEXT: "TEXT",
-  ELEMENT: "element",
-  FRAGMENT: "fragment",
+  TEXT: "TEXT_NODE",
+  ELEMENT: "ELEMENT_NODE",
+  FRAGMENT: "FRAGMENT_NODE",
 });
 
 /**
@@ -40,18 +42,40 @@ export const VNodeType = Object.freeze({
  * * @example
  * createVNode("div", { class: "box" }, ["click"])
  */
-function createVNode(tag = "", props = {}, children = []) {
+function createElementVNode(tag = "", props = {}, children = []) {
   if (Array.isArray(props) || typeof props === "string") {
     children = props;
     props = {};
   }
 
+  const normalizedChildren = mapChildrenToVNodes(children);
+
   return {
     type: VNodeType.ELEMENT,
     tag,
     props,
-    children,
+    children: normalizedChildren,
   };
 }
 
-export { createVNode as h };
+function createTextVNode(txt = "") {
+  return {
+    type: VNodeType.TEXT,
+    value: txt,
+  };
+}
+
+function mapChildToVNode(child) {
+  if (typeof child === "string") {
+    return createTextVNode(child);
+  }
+  return createElementVNode(child);
+}
+
+function mapChildrenToVNodes(children = []) {
+  return Array.from(children)
+    .filter((child) => child !== null && child !== undefined)
+    .map((child) => mapChildToVNode(child));
+}
+
+export { createElementVNode as h, createTextVNode as hString };

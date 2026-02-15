@@ -15,3 +15,5 @@ export function createTextNode(vdom, parentEl) {
   const textNode = document.createTextNode(children);
   parentEl.append(textNode);
 }
+
+export function createElementNode(vdom, parentEl) {}
