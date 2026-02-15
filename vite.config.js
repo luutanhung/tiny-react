@@ -4,8 +4,11 @@ export default defineConfig({
   build: {
     lib: {
       entry: "src/index.js",
-      name: "Tiny React",
+      name: "TinyReact",
       fileName: "tiny-react",
+    },
+    rollupOptions: {
+      external: ["tests"],
     },
   },
 });

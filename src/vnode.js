@@ -1,4 +1,4 @@
-import { isHTMLTag, log } from "./helpers";
+import { isHTMLTag } from "./helpers";
 
 export const VNodeType = Object.freeze({
   TEXT: "TEXT_NODE",

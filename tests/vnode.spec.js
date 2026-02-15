@@ -1,6 +1,5 @@
 import { expect, test, describe } from "vitest";
-import { h } from "../vnode";
-import { log } from "../helpers";
+import { h } from "../src";
 
 describe("vnode", () => {
   describe("creates element nodes", () => {

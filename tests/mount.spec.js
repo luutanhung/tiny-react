@@ -1,7 +1,7 @@
 import { describe, test, expect } from "vitest";
-import { createTextNode, mount } from "../mount";
-import { log, logDOM } from "../helpers";
-import { h } from "../vnode";
+import { createTextNode, mount } from "../src/mount";
+import { logDOM } from "./helpers";
+import { h } from "../src";
 
 describe("mount", () => {
   test("creates a tree of html elements", () => {
