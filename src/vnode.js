@@ -61,7 +61,7 @@ function createElementVNode(tag = "", props = {}, children = []) {
 function createTextVNode(txt = "") {
   return {
     type: VNodeType.TEXT,
-    nodeValue: txt,
+    value: txt,
   };
 }
 

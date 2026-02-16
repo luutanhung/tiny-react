@@ -34,7 +34,7 @@ describe("mount", () => {
       const parent = document.createElement("span");
       const textContent = "Tiny React";
       const vdom = {
-        nodeValue: textContent,
+        value: textContent,
       };
       createTextNode(vdom, parent);
       expect(parent.textContent).toBe(textContent);

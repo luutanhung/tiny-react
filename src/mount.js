@@ -16,8 +16,8 @@ export function mount(vdom, parentEl) {
 }
 
 export function createTextNode(vdom, parentEl) {
-  const { nodeValue = "" } = vdom;
-  const textNode = document.createTextNode(nodeValue);
+  const { value = "" } = vdom;
+  const textNode = document.createTextNode(value);
   parentEl.append(textNode);
 }
 
