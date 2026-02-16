@@ -26,7 +26,7 @@ describe("mount", () => {
     const container = document.createElement("div");
     mount(vdom, container);
     // logDOM(container);
-    logDOM(container.querySelector("button"));
+    // logDOM(container.querySelector("button"));
   });
 
   describe("createTextNode", () => {
@@ -34,7 +34,7 @@ describe("mount", () => {
       const parent = document.createElement("span");
       const textContent = "Tiny React";
       const vdom = {
-        value: textContent,
+        nodeValue: textContent,
       };
       createTextNode(vdom, parent);
       expect(parent.textContent).toBe(textContent);
