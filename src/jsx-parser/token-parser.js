@@ -1,7 +1,7 @@
-import { VNodeType } from "../../dist/tiny-react";
-import { TokenType } from "./tokenizer";
+import { VNodeType } from '../vnode';
+import { tokenize, TokenType } from "./tokenizer";
 
-function parseElement(tokens = [], tokenIdx) {
+export  function parseElement(tokens = [], tokenIdx) {
   if (tokens[tokenIdx].type !== TokenType.LSD) {
     throw new Error("parseElement: Expected < token.");
   }
@@ -97,7 +97,7 @@ function parseElement(tokens = [], tokenIdx) {
     },
     tokenIdx,
   ];
-}
+  }
 
 export function parseTokens(tokens = []) {
   let ast = {};
@@ -114,4 +114,9 @@ export function parseTokens(tokens = []) {
   }
 
   return ast;
+}
+
+export function parseJSX(jsxString = "") {
+  const tokens = tokenize(jsxString);
+  return parseTokens(tokens);
 }
