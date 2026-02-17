@@ -1,4 +1,4 @@
-import { patch } from "./dom";
+import { mount, patch, unmount } from "./dom";
 import { setCurrentCommponent, setHookIdx } from './hooks';
 import { parseJSX } from './jsx-parser';
 
@@ -34,9 +34,11 @@ export function createComponent(fn) {
       setCurrentCommponent(this);
       setHookIdx(0);
 
+      unmount(oldVDom);
       const newVDom = fn(props);
       this.vdom = newVDom;
-      patch(oldVDom, newVDom);
+      // patch(oldVDom, newVDom);
+      mount(newVDom, oldVDom.parentEl);
 
       setCurrentCommponent(null);
     }

@@ -32,6 +32,6 @@ export function patchClassName(el, oldCls = "", newCls = "") {
   }
 }
 
-export function patch(oldVDom, newVDom, parentEl) {
+export function patch(oldVNode, newVNode, parentEl) {
   
 }

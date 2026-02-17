@@ -3,6 +3,7 @@ import { setProps } from "../helpers/attribute";
 import { ComponentRegistry } from '../component';
 import { parseJSX } from '../jsx-parser';
 import { VNodeType } from "../vnode";
+import { insertAtIdx } from './manipulation';
 
 export function mount(vdom, parentEl, idx) {
   const { type: typeOfVDom, tag } = vdom;
@@ -16,34 +17,42 @@ export function mount(vdom, parentEl, idx) {
       createElementNode(vdom, parentEl, idx);
     }
   } else if (typeOfVDom === VNodeType.FRAGMENT) {
-    createFragmentNode(vdom, parentEl);
+    createFragmentNode(vdom, parentEl, idx);
   } else {
     throw new TypeError("mount: type of VDom must be VNodeType.");
   }
 }
 
-export function createTextNode(vdom, parentEl) {
+export function createTextNode(vdom, parentEl, idx) {
   const { value = "" } = vdom;
   const textNode = document.createTextNode(value);
-  parentEl.append(textNode);
+  vdom.el = textNode;
+  vdom.parentEl = parentEl;
+  insertAtIdx(vdom.el, parentEl, idx);
 }
 
-export function createElementNode(vdom, parentEl) {
+export function createElementNode(vdom, parentEl, idx) {
   const { tag, props, children = [] } = vdom;
 
   const elementNode = document.createElement(tag);
-  setProps(elementNode, props);
+  vdom.el = elementNode;
+  vdom.parentEl = parentEl;
+
+  setProps(vdom.el, props);
 
   children.forEach((child) => {
-    mount(child, elementNode);
+    mount(child, vdom.el);
   });
-  parentEl.append(elementNode);
+
+  insertAtIdx(vdom.el, parentEl, idx);
 }
 
-export function createFragmentNode(vdom, parentEl) {
+export function createFragmentNode(vdom, parentEl, idx) {
   const { children = [] } = vdom;
-  children.forEach((child) => {
-    mount(child, parentEl);
+  vdom.el = parentEl;
+
+  children.forEach((child, i) => {
+    mount(child, vdom.el, idx ? idx + i : null);
   });
 }
 

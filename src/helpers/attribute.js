@@ -33,15 +33,29 @@ export function setAttrs(el, attrs = {}) {
   }
 }
 
-export function setEvents(el, events = {}) {
+export function setEventListeners(el, events = {}) {
   if (isEmpty(events)) return;
-  if (!el.__listeners) {
-    el.__listeners = {};
+  if (!el.listeners) {
+    el.listeners = {};
   }
   for (const [eventName, handler] of Object.entries(events)) {
     el.addEventListener(eventName, handler);
-    el.__listeners[eventName] = handler;
+    el.listeners[eventName] = handler;
   }
+}
+
+export function removeEventListeners(el) {
+  if (!el.listeners) return;
+  for (const [eventName, handler] of Object.entries(el.listeners)) {
+    el.removeEventListener(eventName, handler);
+  }
+  el.listeners = {};
+}
+
+export function removeEventListener(el, eventName) {
+  if (!el.listeners || !(eventName in el.listeners)) return;
+  const handler = el.listeners[eventName];
+  el.removeEventListener(eventName, handler);
 }
 
 export function splitProps(props = {}) {
@@ -80,7 +94,7 @@ export function setProps(el, props = {}) {
   setStyles(el, style);
   setDataAttrs(el, data);
   setAttrs(el, attrs);
-  setEvents(el, events);
+  setEventListeners(el, events);
 }
 
 function normalizeClass(className) {

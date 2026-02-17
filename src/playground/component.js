@@ -17,11 +17,20 @@ export const Counter = createComponent(function Counter(props) {
     h("div", { class: "w-[350px]" }, [
       h("div", { class: "text-lg text-center" }, [`${count}`]), 
       h("div", { class: "flex flex-row justify-between items-center"}, [
-          h("button", { type: "button", class: "cursor-pointer", onClick: () => increment() }, ["increment"]),
-          h("button", { type: "button", class: "cursor-pointer", onClick: () => decrement() }, ["decrement"]),
+          h("button", { 
+            type: "button", 
+            class: "cursor-pointer", 
+            onClick: increment }, 
+            ["increment"]
+          ),
+          h("button", { 
+            type: "button", 
+            class: "cursor-pointer", 
+            onClick: decrement,
+          }, ["decrement"]),
         ] )
     ]),
   ]);
-  
+
   return vdom;
 });
