@@ -1,3 +1,4 @@
+import { ComponentRegistry, isComponent, tagIsComponentTag } from '../helpers';
 import { VNodeType } from '../vnode';
 import { tokenize, TokenType } from "./tokenizer";
 
@@ -7,7 +8,7 @@ export  function parseElement(tokens = [], tokenIdx) {
   }
 
   tokenIdx += 1;
-  const htmlTag = tokens[tokenIdx].value;
+  const tag = tokens[tokenIdx].value;
   tokenIdx += 1;
 
   const elementProps = {};
@@ -38,12 +39,11 @@ export  function parseElement(tokens = [], tokenIdx) {
       elementProps[key] = true;
     }
   }
-
   if (tokens[tokenIdx].type === TokenType.GRTD_SLASH) {
     return [
       {
         type: VNodeType.ELEMENT,
-        tag: htmlTag,
+        tag,
         props: elementProps,
         children: [],
       },
@@ -59,7 +59,7 @@ export  function parseElement(tokens = [], tokenIdx) {
   const children = [];
   while (
     tokens[tokenIdx].type !== TokenType.LSD_SLASH ||
-    tokens[tokenIdx + 1].value !== htmlTag
+    tokens[tokenIdx + 1].value !== tag
   ) {
     if (tokens[tokenIdx].type === TokenType.LSD) {
       const [vnode, newTokenIdx] = parseElement(tokens, tokenIdx);
@@ -91,7 +91,7 @@ export  function parseElement(tokens = [], tokenIdx) {
   return [
     {
       type: VNodeType.ELEMENT,
-      tag: htmlTag,
+      tag,
       props: elementProps,
       children,
     },

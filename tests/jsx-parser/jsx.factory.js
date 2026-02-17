@@ -1,5 +1,13 @@
+export function Icon() {
+  return `<span>Icon</span>`;
+}
 export function Title() {
-  return `<h2 className="text-lg font-bold">Quick Task</h2>`;
+  return `
+    <div>
+      <Icon />
+      <h2>Todo Management</h2>
+    </div>
+  `;
 }
 
 export const nativeDOMJsxString = `
@@ -17,7 +25,7 @@ export const nativeDOMJsxString = `
 
 export const complexJsxString = `
   <div className="card shadow-sm p-4">
-    <h2 className="text-lg font-bold">Quick Task</h2>
+    <Title />
     <div className="profile">
       Active tasks
     </div>
