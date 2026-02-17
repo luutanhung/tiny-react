@@ -37,3 +37,22 @@ export const complexJsxString = `
     </button>
   </div>
 `;
+
+export const JsxStringWithFragment = `
+  <header className="bg-gray-100 p-4">
+    <nav>
+      <ul className="flex gap-4">
+        <>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Tasks</a></li>
+
+          <>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Tasks</a></li>
+          </>
+        </>
+        <li><a href="#">Settings</a></li>
+      </ul>
+    </nav>
+  </header>
+`;

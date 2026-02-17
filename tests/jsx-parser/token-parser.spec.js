@@ -2,7 +2,7 @@ import { beforeAll, describe, test } from "vitest";
 import { parseJSX, parseTokens } from "../../src/jsx-parser/token-parser";
 import { tokenize } from "../../src/jsx-parser";
 import { log, logDOM } from "../helpers";
-import { Icon, complexJsxString as jsxString, Title } from "./jsx.factory";
+import { Icon, complexJsxString as jsxString, JsxStringWithFragment, Title } from "./jsx.factory";
 import { mount } from '../../src';
 import { registerComponent } from '../../src/helpers';
 
@@ -21,10 +21,20 @@ describe("parseToken", () => {
     logDOM(ast);
   });
 
-  test.only("parseJSX", () => {
-    const vdom = parseJSX(jsxString);
-    const container = document.createElement("div");
-    mount(vdom, container);
-    logDOM(container);
+  describe("parseJSX", () => {
+    test("parses a JSX string", () => {
+      const vdom = parseJSX(jsxString);
+      const container = document.createElement("div");
+      mount(vdom, container);
+      logDOM(container);
+    })
+
+    test.only("parses a JSX string supporting Fragment", () => {
+      const vdom = parseJSX(JsxStringWithFragment);
+      // log(vdom);
+      const container = document.createElement("div");
+      mount(vdom, container);
+      logDOM(container);
+    });
   });
 });

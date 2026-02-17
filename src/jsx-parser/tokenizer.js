@@ -10,6 +10,8 @@ export const TokenType = Object.freeze({
   EQ: "EQ",
   IDENTIFIER: "IDENTIFIER",
   TEXT_NODE: "TEXT_NODE",
+  OPENING_FRAGMENT: "OPENING_FRAGMENT",
+  CLOSING_FRAGMENT: "CLOSING_FRAGMENT",
 });
 
 /**
@@ -34,7 +36,15 @@ export const tokenize = (jsxString = "") => {
       inTag = true;
       // Start of a closing tag.
       if (jsxString[tokPos + 1] === "/") {
-        tokens.push({ type: TokenType.LSD_SLASH, value: "</" });
+        if (jsxString[tokPos + 2] === ">") {
+          tokens.push({ type: TokenType.CLOSING_FRAGMENT, value: "</>" });
+          tokPos += 3;
+        } else {
+          tokens.push({ type: TokenType.LSD_SLASH, value: "</" });
+          tokPos += 2;
+        }
+      } else if (jsxString[tokPos + 1] === ">") {
+        tokens.push({ type: TokenType.OPENING_FRAGMENT, value: "<>" });
         tokPos += 2;
       } else {
         tokens.push({ type: TokenType.LSD, value: "<" });
@@ -43,7 +53,11 @@ export const tokenize = (jsxString = "") => {
     } else if (jsxString[tokPos] === ">") {
       inTag = false;
       if (jsxString[tokPos - 1] === "/") {
-        tokens.push({ type: TokenType.GRTD_SLASH, value: "/>" });
+        if (jsxString[tokPos - 2] === "<") {
+          tokens.push({ type: TokenType.CLOSING_FRAGMENT, value: "</>" });
+        } else {
+          tokens.push({ type: TokenType.GRTD_SLASH, value: "/>" });
+        }
         tokPos += 2;
       } else {
         tokens.push({ type: TokenType.GRTD, value: ">" });
