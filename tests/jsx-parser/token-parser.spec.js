@@ -1,10 +1,8 @@
 import { beforeAll, describe, test } from "vitest";
-import { parseJSX, parseTokens } from "../../src/jsx-parser/token-parser";
 import { tokenize } from "../../src/jsx-parser";
 import { log, logDOM } from "../helpers";
 import { Icon, complexJsxString as jsxString, JsxStringWithFragment, Title } from "./jsx.factory";
-import { mount } from '../../src';
-import { registerComponent } from '../../src/helpers';
+import { mount, parseJSX, parseTokens, registerComponent } from '../../src';
 
 describe("parseToken", () => {
   beforeAll(() => {
@@ -34,7 +32,7 @@ describe("parseToken", () => {
       // log(vdom);
       const container = document.createElement("div");
       mount(vdom, container);
-      logDOM(container);
+      // logDOM(container);
     });
   });
 });

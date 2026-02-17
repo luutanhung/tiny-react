@@ -1,10 +1,24 @@
-class Component {
-  constructor(props) {
-    this.props = props;
-    this.state = this.state || {};
-  }
+import { parseJSX } from './jsx-parser';
 
-  setState(partialState) {
-    this.state = Object.assign({}, this.state, partialState);
+export function isComponent(vdomTag) {
+  return typeof vdomTag === "function" && /^[A-Z]/.test(vdomTag.name);
+}
+
+export function tagIsComponentTag(tag) {
+  return /^[A-Z]/.test(tag);
+}
+
+export const ComponentRegistry = new Map();
+
+export function registerComponent(component) {
+  ComponentRegistry.set(component.name, component);
+}
+
+export function defineComponent(fn) {
+  const wrappedComponents = (props = {}) => {
+    const result = fn(props);
+    return parseJSX(result);
   }
+  ComponentRegistry.set(fn.name, fn);
+  return wrappedComponents;
 }
