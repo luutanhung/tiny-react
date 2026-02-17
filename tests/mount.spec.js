@@ -1,5 +1,5 @@
 import { describe, test, expect } from "vitest";
-import { createTextNode, mount } from "../src/mount";
+import { createTextNode, mount } from "../src/dom/mount";
 import { logDOM } from "./helpers";
 import { h } from "../src";
 

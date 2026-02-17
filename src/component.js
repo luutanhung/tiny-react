@@ -1,7 +1,6 @@
 import { componentHooks, setCurrentCommponent, setHookIdx } from './hooks';
 import { parseJSX } from './jsx-parser';
-import { mount } from './mount';
-import { patch } from './patch';
+import { mount, patch } from "./dom";
 
 export const ComponentRegistry = new Map();
 
@@ -35,8 +34,6 @@ export function createComponent(fn) {
       setCurrentCommponent(this);
       setHookIdx(0);
 
-      console.log(componentHooks);
-      
       const newVDom = fn(props);
       this.vdom = newVDom;
       patch(oldVDom, newVDom);

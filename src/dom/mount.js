@@ -1,8 +1,8 @@
-import { tagIsComponentTag } from './helpers';
-import { setProps } from "./helpers/attribute";
-import { ComponentRegistry } from './component';
-import { parseJSX } from './jsx-parser';
-import { VNodeType } from "./vnode";
+import { tagIsComponentTag } from '../helpers';
+import { setProps } from "../helpers/attribute";
+import { ComponentRegistry } from '../component';
+import { parseJSX } from '../jsx-parser';
+import { VNodeType } from "../vnode";
 
 export function mount(vdom, parentEl) {
   const { type: typeOfVDom, tag } = vdom;
