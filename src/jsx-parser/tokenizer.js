@@ -1,10 +1,10 @@
 import { isIdentifer } from "./utils";
 
 export const TokenType = Object.freeze({
-  LSD_SLASH: "LSD_SLASH",
-  LSD: "LSD",
-  GRTD_SLASH: "GRTD_SLASH",
-  GRTD: "GRTD",
+  LSD_SLASH: "LSD_SLASH", // </
+  LSD: "LSD", // <
+  GRTD_SLASH: "GRTD_SLASH", // />
+  GRTD: "GRTD", // >
   PROP_VALUE: "PROP_VALUE",
   JS_EXPRESSION: "JS_EXPRESSION",
   EQ: "EQ",

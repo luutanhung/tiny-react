@@ -58,7 +58,7 @@ function parseElement(tokens = [], tokenIdx) {
 
   const children = [];
   while (
-    tokens[tokenIdx].type !== TokenType.LSD_SLASH &&
+    tokens[tokenIdx].type !== TokenType.LSD_SLASH ||
     tokens[tokenIdx + 1].value !== htmlTag
   ) {
     if (tokens[tokenIdx].type === TokenType.LSD) {
