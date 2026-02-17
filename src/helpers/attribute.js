@@ -1,15 +1,13 @@
 import { isEmpty } from "./array";
+import { setAttrs } from '../props';
 
 export function isEventKey(prop) {
   return /^on[A-Z]/.test(prop); // onClick, onInput, onKeydown...
 }
 
-export function isDataAttrKey(key) {
-  return key.startsWith("data-");
-}
-
-export function setClasses(el, className = []) {
-  el.classList.add(...className);
+export function setClasses(el, className = "") {
+  const classes = normalizeClass(className);
+  el.classList.add(...classes);
 }
 
 export function setStyles(el, style = {}) {
@@ -23,13 +21,6 @@ export function setDataAttrs(el, dataAttrs = {}) {
   if (isEmpty(dataAttrs)) return;
   for (const [property, val] of Object.entries(dataAttrs)) {
     el.dataset[property] = val;
-  }
-}
-
-export function setAttrs(el, attrs = {}) {
-  if (isEmpty(attrs)) return;
-  for (const [property, val] of Object.entries(attrs)) {
-    el[property] = val;
   }
 }
 
@@ -62,7 +53,6 @@ export function splitProps(props = {}) {
   const res = {
     class: [],
     style: {},
-    data: {},
     attrs: {},
     events: {},
   };
@@ -70,14 +60,12 @@ export function splitProps(props = {}) {
   for (const key in props) {
     const val = props[key];
     if (key === "class") {
-      res.class = normalizeClass(val);
+      res.class = val;
     } else if (key === "style") {
       res.style = style;
     } else if (isEventKey(key)) {
       const eventName = key.slice(2).toLowerCase();
       res.events[eventName] = val;
-    } else if (isDataAttrKey(key)) {
-      res.data[key] = val;
     } else {
       res.attrs[key] = val;
     }

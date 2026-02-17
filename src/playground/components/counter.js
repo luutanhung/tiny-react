@@ -1,6 +1,6 @@
-import { createComponent } from '../component';
-import { useState } from '../hooks';
-import { h } from '../vnode';
+import { createComponent } from '../../component';
+import { useState } from '../../hooks';
+import { h } from '../../vnode';
 
 export const Counter = createComponent(function Counter(props) {
   const [count, setCount] = useState(0);

@@ -37,8 +37,8 @@ export function createComponent(fn) {
       unmount(oldVDom);
       const newVDom = fn(props);
       this.vdom = newVDom;
-      // patch(oldVDom, newVDom);
-      mount(newVDom, oldVDom.parentEl);
+      patch(oldVDom, newVDom);
+      // mount(newVDom, oldVDom.parentEl);
 
       setCurrentCommponent(null);
     }

@@ -1,4 +1,4 @@
 import { mount } from "../index";
-import { Counter } from './component';
+import { Counter } from './components';
 
 mount(Counter(), document.getElementById("app"));
