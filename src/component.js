@@ -1,6 +1,6 @@
-import { componentHooks, setCurrentCommponent, setHookIdx } from './hooks';
+import { patch } from "./dom";
+import { setCurrentCommponent, setHookIdx } from './hooks';
 import { parseJSX } from './jsx-parser';
-import { mount, patch } from "./dom";
 
 export const ComponentRegistry = new Map();
 

@@ -1,19 +1,19 @@
-import { tagIsComponentTag } from '../helpers';
+import { isNil, tagIsComponentTag } from '../helpers';
 import { setProps } from "../helpers/attribute";
 import { ComponentRegistry } from '../component';
 import { parseJSX } from '../jsx-parser';
 import { VNodeType } from "../vnode";
 
-export function mount(vdom, parentEl) {
+export function mount(vdom, parentEl, idx) {
   const { type: typeOfVDom, tag } = vdom;
 
   if (typeOfVDom === VNodeType.TEXT) {
-    createTextNode(vdom, parentEl);
+    createTextNode(vdom, parentEl, idx);
   } else if (typeOfVDom === VNodeType.ELEMENT) {
     if (tagIsComponentTag(tag)) {
-     createComponentNode(vdom, parentEl);
+     createComponentNode(vdom, parentEl, idx);
     } else {
-      createElementNode(vdom, parentEl);
+      createElementNode(vdom, parentEl, idx);
     }
   } else if (typeOfVDom === VNodeType.FRAGMENT) {
     createFragmentNode(vdom, parentEl);
