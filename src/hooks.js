@@ -7,6 +7,9 @@ export function useState(initialValue) {
   const hooks = componentHooks.get(currComp) || [];
   if (hooks[hookIdx] === undefined) {
     hooks[hookIdx] = initialValue;
+    if (currComp) {
+       componentHooks.set(currComp, hooks);
+    }
   }
 
   const stateIdx = hookIdx;
@@ -14,14 +17,13 @@ export function useState(initialValue) {
 
   const setState = (newVal) => {
     hooks[stateIdx] = newVal;
-    instance?.__rerender();
+    if (instance && instance.__rerender) {
+      instance.__rerender();
+    }
   }
 
   const val = hooks[stateIdx];
   hookIdx += 1;
-  if (currComp) {
-    componentHooks.set(currComp, hooks);
-  }
 
   return [val, setState]
 }
@@ -34,6 +36,6 @@ export function getCurrentComponent() {
   return currComp;
 }
 
-export function setHookIdx(hookIdx) {
-  hookIdx = hookIdx;
+export function setHookIdx(val) {
+  hookIdx = val;
 }
