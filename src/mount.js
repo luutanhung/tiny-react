@@ -1,6 +1,7 @@
-import { ComponentRegistry, isComponent, isHTMLTag, tagIsComponentTag } from './helpers';
+import { tagIsComponentTag } from './helpers';
 import { setProps } from "./helpers/attribute";
-import { parseJSX, parseTokens } from './jsx-parser';
+import { ComponentRegistry } from './component';
+import { parseJSX } from './jsx-parser';
 import { VNodeType } from "./vnode";
 
 export function mount(vdom, parentEl) {
@@ -10,7 +11,7 @@ export function mount(vdom, parentEl) {
     createTextNode(vdom, parentEl);
   } else if (typeOfVDom === VNodeType.ELEMENT) {
     if (tagIsComponentTag(tag)) {
-     createComponent(vdom, parentEl);
+     createComponentNode(vdom, parentEl);
     } else {
       createElementNode(vdom, parentEl);
     }
@@ -46,7 +47,7 @@ export function createFragmentNode(vdom, parentEl) {
   });
 }
 
-export function createComponent(vdom, parentEl) {
+export function createComponentNode(vdom, parentEl) {
   const { tag } = vdom;
   const Component = ComponentRegistry.get(tag);
   const ast = parseJSX(Component());
