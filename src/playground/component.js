@@ -58,7 +58,7 @@ export const Counter = createComponent(function Counter(props) {
         h("div", { class: "mt-4 text-center" }, [
           h("button", {
             type: "button",
-            class: "text-sm text-gray-400 hover:text-gray-300 transition-colors duration-200 underline underline-offset-2 focus:outline-none focus:text-white",
+            class: "cursor-pointer text-sm text-gray-400 hover:text-gray-300 transition-colors duration-200 underline underline-offset-2 focus:outline-none focus:text-white",
             onClick: reset
           }, ["Reset to zero"])
         ])
