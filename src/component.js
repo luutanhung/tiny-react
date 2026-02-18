@@ -1,6 +1,6 @@
-import { mount, patch, unmount } from "./dom";
-import { setCurrentCommponent, setHookIdx } from './hooks';
-import { parseJSX } from './jsx-parser';
+import { patch } from "./dom";
+import { setCurrentCommponent, setHookIdx } from "./hooks";
+import { parseJSX } from "./jsx-parser";
 
 export const ComponentRegistry = new Map();
 
@@ -16,7 +16,7 @@ export function createComponent(fn) {
       parentEl: null,
       vdom: null,
     };
-   
+
     setCurrentCommponent(instance);
     setHookIdx(0);
 
@@ -27,26 +27,23 @@ export function createComponent(fn) {
 
     instance.vdom = vdom;
 
-    instance.__rerender = function() {
+    instance.__rerender = function () {
       const oldVDom = this.vdom;
 
       // Set this component as current and reset hook idx before rendering.
       setCurrentCommponent(this);
       setHookIdx(0);
 
-      unmount(oldVDom);
       const newVDom = fn(props);
-      this.vdom = newVDom;
-      patch(oldVDom, newVDom);
-      // mount(newVDom, oldVDom.parentEl);
+      this.vdom = patch(oldVDom, newVDom, oldVDom.parentEl);
 
       setCurrentCommponent(null);
-    }
+    };
 
     setCurrentCommponent(null);
 
     return vdom;
-  }
+  };
 
   ComponentRegistry.set(fn.name, wrappedComponents);
   return wrappedComponents;

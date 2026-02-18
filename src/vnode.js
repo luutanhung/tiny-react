@@ -115,6 +115,24 @@ function createVNode(tag = "", props = {}, children = []) {
   return createTextVNode(tag);
 }
 
+export function extractChildVNodes(vnode) {
+  if (vnode?.chidlren && vnode.children.length === 0) {
+    return [];
+  }
+
+  const children = [];
+
+  for (const child of vnode.children) {
+    if (child.type === VNodeType.FRAGMENT) {
+      children.push(...extractChildVNodes(child));
+    } else {
+      children.push(child);
+    }
+  }
+
+  return children;
+}
+
 export {
   createVNode as h,
   createElementVNode as hElement,

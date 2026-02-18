@@ -1,3 +1,4 @@
+import { isEmpty } from '../helpers';
 
 export function setEventListeners(el, events = {}) {
   if (isEmpty(events)) return;

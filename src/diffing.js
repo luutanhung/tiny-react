@@ -1,4 +1,4 @@
-const ArrayDiffOp = Object.freeze({
+export const ArrayDiffOp = Object.freeze({
   ADD: "add",
   REMOVE: "remove",
   MOVE: "move",

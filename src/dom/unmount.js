@@ -1,5 +1,5 @@
-import { removeEventListeners } from '../helpers/attribute';
 import { VNodeType } from '../vnode';
+import { removeEventListeners } from '../props';
 
 export function unmount(vdom) {
   const { type } = vdom;
