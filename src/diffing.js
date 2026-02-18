@@ -1,5 +1,3 @@
-import { log } from '../tests/helpers';
-
 const ArrayDiffOp = Object.freeze({
   ADD: "add",
   REMOVE: "remove",
@@ -123,7 +121,7 @@ class ArrayWrapper {
   }
 }
 
-export function diffArray(oldArr, newArr, equalFn = (a, b) => a === b) {
+export function diffArrays(oldArr, newArr, equalFn = (a, b) => a === b) {
   const opSeq = [];
   
   const arrWrapper = new ArrayWrapper(oldArr, equalFn);
@@ -160,7 +158,7 @@ export function diffArray(oldArr, newArr, equalFn = (a, b) => a === b) {
   return opSeq;
 }
 
-export function diffObject(oldObj, newObj) {
+export function diffObjects(oldObj, newObj) {
   const oldKeys = Object.keys(oldObj);
   const newKeys = Object.keys(newObj);
 

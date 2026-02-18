@@ -1,6 +1,6 @@
-import { diffObject } from '../diffing';
+import { diffObjects } from '../diffing';
 import { splitProps } from '../helpers/attribute';
-import { removeAttribute, setAttribute } from '../props';
+import { addEventListener, removeAttribute, removeStyle, setAttribute, setStyle } from '../props';
 import { VNodeType } from '../vnode';
 import { mount } from './mount';
 import { unmount } from './unmount';
@@ -20,7 +20,7 @@ export function checkTwoNodesAreEqual(firstVNode, secondVNode) {
   return true;
 }
 
-export function patchClassName(el, oldCls = "", newCls = "") {
+export function patchClasses(el, oldCls = "", newCls = "") {
   const oldSt = new Set(oldCls.split(/\s+/).filter(Boolean));
   const newSt = new Set(newCls.split(/\s+/).filter(Boolean));
 
@@ -75,12 +75,16 @@ export function patchElement(oldVNode, newVNode) {
   const el = oldVNode.el;
   const { class: oldClass, style: oldStyle, attrs: oldAttrs, events: oldEvents } = splitProps(oldVNode.props);
   const { class: newClass, style: newStyle, attrs: newAttrs, events: newEvents } = splitProps(newVNode.props);
+  const { oldListeners } = oldVNode.el.listeners;
 
   patchAttrs(el, oldAttrs, newAttrs);
+  patchClasses(el, oldClass, newClass);
+  patchStyles(el, oldStyle, newStyle);
+  patchEvents(el, oldListeners, oldEvents, newEvents);
 }
 
 export function patchAttrs(el, oldAttrs, newAttrs) {
-  const { added, removed, updated } = diffObject(oldAttrs, newAttrs);
+  const { added, removed, updated } = diffObjects(oldAttrs, newAttrs);
 
   for (const attrName of removed) {
     removeAttribute(el, attrName);
@@ -89,4 +93,32 @@ export function patchAttrs(el, oldAttrs, newAttrs) {
   for (const attrName of added.concat(updated)) {
     setAttribute(el, attr, newAttrs[attrName]);
   }
+}
+
+export function patchStyles(el, oldStyle, newStyle) {
+  const { added, removed, updated } = diffObjects(oldStyle, newStyle);
+
+  for (const property of removed) {
+    removeStyle(el, property);
+  }
+
+  for (const property of added.concat(updated)) {
+    setStyle(el, property, newStyle[property]);
+  }
+}
+
+export function patchEvents(el, oldListeners = {}, oldEvents = {}, newEvents = {}) {
+  const { added, removed, updated } = diffObjects(oldEvents, newEvents);
+
+  for (const eventName of removed.concat(updated)) {
+    el.removeEventListener(eventName, oldListeners[eventName]);
+  }
+
+  const listeners = {};
+  for (const eventName of added.concat(updated)) {
+    const listener = addEventListener(el, eventName, newEvents[eventName]);
+    listeners[eventName] = listener;
+  }
+
+  return listeners;
 }
