@@ -1,5 +1,5 @@
-import { h } from "../../vnode";
-import { createComponent } from "../../component";
+import { h } from "../../vnode.js";
+import { createComponent } from "../../component/index.js";
 
 export const Counter = createComponent({
   state() {
