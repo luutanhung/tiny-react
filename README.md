@@ -55,6 +55,66 @@ const vnode = h("div", { class: "box" }, [
 mount(vnode, document.getElementById("root"));
 ```
 
+### ✅ `createComponent()` — Create Class-Based Component
+
+Creates a reusable class-based component with render logic and optional state management.
+
+```js
+import { h, createComponent } from "@luutanhung/tiny-react";
+
+const Counter = createComponent({
+  state: () => ({ count: 0 }),
+  render() {
+    return h("div", null, [
+      h("p", [`Count: ${this.state.count}`]),
+      h("button", {
+        onClick: () => this.setState({ count: this.state.count + 1 }),
+      }, ["Increment"]),
+    ]);
+  },
+});
+
+const counter = new Counter({});
+counter.mount(document.getElementById("root"));
+```
+
+### ✅ `patch()` — Update DOM with Changes
+
+Efficiently updates the real DOM by comparing old and new virtual DOM trees and applying only necessary changes.
+
+```js
+import { h, mount, patch } from "@luutanhung/tiny-react";
+
+const oldVNode = h("div", { class: "box" }, [
+  h("span", ["Hello"]),
+]);
+
+mount(oldVNode, document.getElementById("root"));
+
+const newVNode = h("div", { class: "box updated" }, [
+  h("span", ["World"]),
+]);
+
+patch(oldVNode, newVNode, document.getElementById("root"));
+```
+
+### ✅ `unmount()` — Remove Virtual Node from DOM
+
+Removes a virtual DOM tree and all its children from the real DOM, cleaning up event listeners.
+
+```js
+import { h, mount, unmount } from "@luutanhung/tiny-react";
+
+const vnode = h("div", { class: "box" }, [
+  h("span", ["Tiny React"]),
+]);
+
+mount(vnode, document.getElementById("root"));
+
+// Later, remove it from the DOM
+unmount(vnode);
+```
+
 ---
 
 ## 📄 License
