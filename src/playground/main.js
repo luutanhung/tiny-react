@@ -1,4 +1,5 @@
-import { mount } from "../index";
-import { Counter } from './components';
+import { Counter } from "./components";
 
-mount(Counter(), document.getElementById("app"));
+const counter = new Counter();
+console.log(counter);
+counter.mount(document.getElementById("app"), null);

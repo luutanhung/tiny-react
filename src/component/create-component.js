@@ -1,6 +1,6 @@
-import { patch } from "./dom";
-import { setCurrentCommponent, setHookIdx } from "./hooks";
-import { parseJSX } from "./jsx-parser";
+import { patch } from "../dom";
+import { setCurrentCommponent, setHookIdx } from "../hooks";
+import { parseJSX } from "../jsx-parser";
 
 export const ComponentRegistry = new Map();
 
@@ -8,7 +8,7 @@ export function registerComponent(component) {
   ComponentRegistry.set(component.name, component);
 }
 
-export function createComponent(fn) {
+function createComponent(fn) {
   const wrappedComponents = (props = {}) => {
     const instance = {
       fn,

@@ -1,9 +1,15 @@
-import { ArrayDiffOp, diffArrays, diffObjects } from '../diffing';
-import { splitProps } from '../helpers/attribute';
-import { addEventListener, removeAttribute, removeStyle, setAttribute, setStyle } from '../props';
-import { extractChildVNodes, VNodeType } from '../vnode';
-import { mount } from './mount';
-import { unmount } from './unmount';
+import { ArrayDiffOp, diffArrays, diffObjects } from "../diffing";
+import { splitProps } from "../helpers/attribute";
+import {
+  addEventListener,
+  removeAttribute,
+  removeStyle,
+  setAttribute,
+  setStyle,
+} from "../props";
+import { extractChildVNodes, VNodeType } from "../vnode";
+import { mount } from "./mount";
+import { unmount } from "./unmount";
 
 export function checkTwoNodesAreEqual(firstVNode, secondVNode) {
   if (firstVNode.type !== secondVNode.type) {
@@ -29,7 +35,7 @@ export function patchClasses(el, oldCls = "", newCls = "") {
       el.classList.remove(c);
     }
   }
-  
+
   for (const c of newSt) {
     if (!oldSt.has(c)) {
       el.classList.add(c);
@@ -42,7 +48,7 @@ function findIndexInParentEl(parentEl, el) {
   return idx < 0 ? null : idx;
 }
 
-export function patch(oldVNode, newVNode, parentEl) {
+export function patch(oldVNode, newVNode, parentEl, hostComponent = null) {
   if (!checkTwoNodesAreEqual(oldVNode, newVNode)) {
     const idx = findIndexInParentEl(parentEl, oldVNode.el);
     unmount(oldVNode);
@@ -58,7 +64,7 @@ export function patch(oldVNode, newVNode, parentEl) {
     patchElement(oldVNode, newVNode);
   }
 
-  patchChildren(oldVNode, newVNode);
+  patchChildren(oldVNode, newVNode, hostComponent);
 
   return newVNode;
 }
@@ -75,8 +81,18 @@ export function patchText(oldVNode, newVNode) {
 
 export function patchElement(oldVNode, newVNode) {
   const el = oldVNode.el;
-  const { class: oldClass, style: oldStyle, attrs: oldAttrs, events: oldEvents } = splitProps(oldVNode.props);
-  const { class: newClass, style: newStyle, attrs: newAttrs, events: newEvents } = splitProps(newVNode.props);
+  const {
+    class: oldClass,
+    style: oldStyle,
+    attrs: oldAttrs,
+    events: oldEvents,
+  } = splitProps(oldVNode.props);
+  const {
+    class: newClass,
+    style: newStyle,
+    attrs: newAttrs,
+    events: newEvents,
+  } = splitProps(newVNode.props);
   const { listeners: oldListeners = {} } = oldVNode;
 
   patchAttrs(el, oldAttrs, newAttrs);
@@ -109,7 +125,12 @@ export function patchStyles(el, oldStyle, newStyle) {
   }
 }
 
-export function patchEvents(el, oldListeners = {}, oldEvents = {}, newEvents = {}) {
+export function patchEvents(
+  el,
+  oldListeners = {},
+  oldEvents = {},
+  newEvents = {},
+) {
   const { added, removed, updated } = diffObjects(oldEvents, newEvents);
 
   for (const eventName of removed.concat(updated)) {
@@ -125,7 +146,7 @@ export function patchEvents(el, oldListeners = {}, oldEvents = {}, newEvents = {
   return listeners;
 }
 
-export function patchChildren(oldVNode, newVNode) {
+export function patchChildren(oldVNode, newVNode, hostComponent) {
   const oldChildren = extractChildVNodes(oldVNode);
   const newChildren = extractChildVNodes(newVNode);
   const parentEl = oldVNode.el;
@@ -134,20 +155,26 @@ export function patchChildren(oldVNode, newVNode) {
 
   for (const operation of diffSeq) {
     const { originalIndex, index, item } = operation;
+    const offset = hostComponent?.offset ?? 0;
 
     if (operation.op === ArrayDiffOp.ADD) {
-      mount(item, parentEl, index);
+      mount(item, parentEl, index + offset, hostComponent);
     } else if (operation.op === ArrayDiffOp.REMOVE) {
       unmount(item);
     } else if (operation.op === ArrayDiffOp.MOVE) {
       const oldChild = oldChildren[originalIndex];
       const newChild = newChildren[index];
       const el = oldChild.el;
-      const elAtTargetIndex = parentEl.childNodes[index];
+      const elAtTargetIndex = parentEl.childNodes[index + offset];
       parentEl.insertBefore(el, elAtTargetIndex);
-      patch(oldChild, newChild, parentEl);
+      patch(oldChild, newChild, parentEl, hostComponent);
     } else if (operation.op === ArrayDiffOp.NOOP) {
-      patch(oldChildren[originalIndex], newChildren[index], parentEl);
+      patch(
+        oldChildren[originalIndex],
+        newChildren[index],
+        parentEl,
+        hostComponent,
+      );
     }
   }
 }
